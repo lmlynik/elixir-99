@@ -44,14 +44,14 @@ defmodule Problem2 do
 
   """
   def oneToLast([]) do
-     nil
+    nil
   end
+
   def oneToLast(arr) do
-     [_head | rest] = Enum.reverse(arr)
-     List.first(rest)
+    [_head | rest] = Enum.reverse(arr)
+    List.first(rest)
   end
 end
-
 
 defmodule Problem3 do
   @moduledoc """
@@ -74,7 +74,7 @@ defmodule Problem3 do
 
   """
   def kthElement(arr, k) do
-     Enum.at(arr,k)
+    Enum.at(arr, k)
   end
 end
 
@@ -109,7 +109,7 @@ defmodule Problem4 do
   end
 
   defp findN([], _, acc) do
-     acc
+    acc
   end
 
   defp findN(arr, n, acc) do
@@ -157,13 +157,13 @@ defmodule Problem6 do
 
   """
   def is_palindrome?(arr) do
-     t = arr |> Enum.count |> div_2 |> Kernel.trunc
-     left = Enum.take(arr, t)
-     right = arr |> Enum.reverse |>  Enum.take(t)
-     left == right
-
+    t = arr |> Enum.count() |> div_2 |> Kernel.trunc()
+    left = Enum.take(arr, t)
+    right = arr |> Enum.reverse() |> Enum.take(t)
+    left == right
   end
-  defp div_2(n), do: n/2
+
+  defp div_2(n), do: n / 2
 end
 
 defmodule Problem7 do
@@ -183,7 +183,6 @@ defmodule Problem7 do
   def flatten(arr) do
     List.flatten(arr)
   end
-
 end
 
 defmodule Problem8 do
@@ -207,7 +206,7 @@ defmodule Problem8 do
 
   """
   def compress(arr) do
-    compress(arr, []) |> Enum.reverse
+    compress(arr, []) |> Enum.reverse()
   end
 
   defp compress([], acc), do: acc
@@ -217,39 +216,36 @@ defmodule Problem8 do
     d_acc = if head == acc_last, do: acc, else: [head | acc]
     compress(tail, d_acc)
   end
-
 end
-
-defmodule Problem9 do
-  @moduledoc """
-  Pack consecutive duplicates of list elements into sublists.
-  """
-
-  @doc """
-  Last
-
-  ## Examples
-
-      iex> Problem9.pack(['a','a','b','b','a','c','c','c','d','d','d'])
-      [['a','a''],['b','b'],['a'],['c','c','c'],['d','d','d']]
-
-      iex> Problem9.pack([1, 1, 1, 2, 2, 1, 1, 3, 3, 3, 2, 4, 4, 4, 4 ,2])
-      [[1,1,1],[2,2],[1,1],[3,3,3],[2],[4,4,4,4],[2]]
-
-      iex> Problem9.pack([])
-      []
-
-  """
-  def pack(arr) do
-    pack(arr, [])
-
-  end
-
-  defp pack([], acc), do: acc
-
-  defp pack([head | tail], [acc_head | acc_tail]) do
-    current_element = List.first(acc_head)
-    d_acc = if head == current_element, do: acc, else: [head | acc]
-  end
-
-end
+#
+#defmodule Problem9 do
+#  @moduledoc """
+#  Pack consecutive duplicates of list elements into sublists.
+#  """
+#
+#  @doc """
+#  Last
+#
+#  ## Examples
+#
+#      iex> Problem9.pack(['a','a','b','b','a','c','c','c','d','d','d'])
+#      [['a','a''],['b','b'],['a'],['c','c','c'],['d','d','d']]
+#
+#      iex> Problem9.pack([1, 1, 1, 2, 2, 1, 1, 3, 3, 3, 2, 4, 4, 4, 4 ,2])
+#      [[1,1,1],[2,2],[1,1],[3,3,3],[2],[4,4,4,4],[2]]
+#
+#      iex> Problem9.pack([])
+#      []
+#
+#  """
+#  def pack(arr) do
+#    pack(arr, [])
+#  end
+#
+#  defp pack([], acc), do: acc
+#
+#  defp pack([head | tail], [acc_head | acc_tail]) do
+#    current_element = List.first(acc_head)
+#    d_acc = if head == current_element, do: acc, else: [head | acc]
+#  end
+#end
