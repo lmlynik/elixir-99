@@ -217,35 +217,40 @@ defmodule Problem8 do
     compress(tail, d_acc)
   end
 end
-#
-#defmodule Problem9 do
-#  @moduledoc """
-#  Pack consecutive duplicates of list elements into sublists.
-#  """
-#
-#  @doc """
-#  Last
-#
-#  ## Examples
-#
-#      iex> Problem9.pack(['a','a','b','b','a','c','c','c','d','d','d'])
-#      [['a','a''],['b','b'],['a'],['c','c','c'],['d','d','d']]
-#
-#      iex> Problem9.pack([1, 1, 1, 2, 2, 1, 1, 3, 3, 3, 2, 4, 4, 4, 4 ,2])
-#      [[1,1,1],[2,2],[1,1],[3,3,3],[2],[4,4,4,4],[2]]
-#
-#      iex> Problem9.pack([])
-#      []
-#
-#  """
-#  def pack(arr) do
-#    pack(arr, [])
-#  end
-#
-#  defp pack([], acc), do: acc
-#
-#  defp pack([head | tail], [acc_head | acc_tail]) do
-#    current_element = List.first(acc_head)
-#    d_acc = if head == current_element, do: acc, else: [head | acc]
-#  end
-#end
+
+defmodule Problem9 do
+  @moduledoc """
+  Pack consecutive duplicates of list elements into sublists.
+  """
+
+  @doc """
+  Last
+
+  ## Examples
+
+     #  iex> Problem9.pack(['a','a','b','b','a','c','c','c','d','d','d'])
+     #  [['a','a'],['b','b'],['a'],['c','c','c'],['d','d','d']]
+
+     #  iex> Problem9.pack([1, 1, 1, 2, 2, 1, 1, 3, 3, 3, 2, 4, 4, 4, 4 ,2])
+     #  [[1,1,1],[2,2],[1,1],[3,3,3],[2],[4,4,4,4],[2]]
+
+      iex> Problem9.pack([])
+      []
+
+  """
+  def pack(arr) do
+    pack(arr, [], []) |> Enum.reverse()
+  end
+
+  defp pack([], [], acc), do: acc
+
+  defp pack([], group_acc, acc), do: [group_acc | acc]
+
+  defp pack([head | tail], group_acc, acc) do
+    case group_acc do
+      [^head | _] -> pack(tail, [head | group_acc], acc)
+      [] -> pack(tail, [head], acc)
+      gr -> pack(tail, [head], [gr | acc])
+    end
+  end
+end
