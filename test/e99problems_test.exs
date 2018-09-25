@@ -25,4 +25,5 @@ defmodule ProblemTest do
   doctest Problem23
   doctest Problem24
   doctest Problem25
+  doctest Problem28
 end

@@ -157,9 +157,14 @@ defmodule Problem6 do
 
   """
   def is_palindrome?(arr) do
-    t = arr |> Enum.count() |> div_2 |> Kernel.trunc()
+    t = arr
+        |> Enum.count()
+        |> div_2
+        |> Kernel.trunc()
     left = Enum.take(arr, t)
-    right = arr |> Enum.reverse() |> Enum.take(t)
+    right = arr
+            |> Enum.reverse()
+            |> Enum.take(t)
     left == right
   end
 
@@ -206,7 +211,8 @@ defmodule Problem8 do
 
   """
   def compress(arr) do
-    compress(arr, []) |> Enum.reverse()
+    compress(arr, [])
+    |> Enum.reverse()
   end
 
   defp compress([], acc), do: acc
@@ -239,7 +245,8 @@ defmodule Problem9 do
 
   """
   def pack(arr) do
-    pack(arr, [], []) |> Enum.reverse()
+    pack(arr, [], [])
+    |> Enum.reverse()
   end
 
   defp pack([], [], acc), do: acc
@@ -277,7 +284,8 @@ defmodule Problem10 do
 
   """
   def pack(arr) do
-    Problem9.pack(arr) |> Enum.map(&change_pack(&1))
+    Problem9.pack(arr)
+    |> Enum.map(&change_pack(&1))
   end
 
   defp change_pack(group), do: [Enum.count(group), List.first(group)]
@@ -305,7 +313,8 @@ defmodule Problem11 do
 
   """
   def pack(arr) do
-    Problem9.pack(arr) |> Enum.map(&change_pack(&1))
+    Problem9.pack(arr)
+    |> Enum.map(&change_pack(&1))
   end
 
   defp change_pack([single | []]), do: single
@@ -333,7 +342,8 @@ defmodule Problem12 do
 
   """
   def unpack(arr) do
-    Enum.map(arr, &expand(&1)) |> Enum.concat()
+    Enum.map(arr, &expand(&1))
+    |> Enum.concat()
   end
 
   defp expand([c, el | []]) do
@@ -366,7 +376,9 @@ defmodule Problem13 do
 
   """
   def encode_direct(arr) do
-    count(arr, []) |> Enum.reverse() |> Enum.map(&change_pack(&1))
+    count(arr, [])
+    |> Enum.reverse()
+    |> Enum.map(&change_pack(&1))
   end
 
   defp count([], acc), do: acc
@@ -404,7 +416,8 @@ defmodule Problem14 do
 
   """
   def dupli(arr) do
-    Enum.map(arr, &dupl(&1)) |> Enum.concat()
+    Enum.map(arr, &dupl(&1))
+    |> Enum.concat()
   end
 
   defp dupl(el), do: [el, el]
@@ -434,7 +447,8 @@ defmodule Problem15 do
 
   """
   def dupli(arr, c) do
-    Enum.map(arr, &dupl(&1, c)) |> Enum.concat()
+    Enum.map(arr, &dupl(&1, c))
+    |> Enum.concat()
   end
 
   defp dupl(_, 0), do: []
@@ -563,7 +577,8 @@ defmodule Problem19 do
   end
 
   defp append(arr, el) do
-    [el | Enum.reverse(arr)] |> Enum.reverse()
+    [el | Enum.reverse(arr)]
+    |> Enum.reverse()
   end
 end
 
@@ -690,5 +705,46 @@ defmodule Problem25 do
   def rnd_permu(arr) do
     Enum.count(arr)
     |> (&Problem23.rnd_select(arr, &1)).()
+  end
+end
+
+defmodule Problem28 do
+  @moduledoc """
+  a) We suppose that a list (InList) contains elements that are lists themselves. The objective is to sort the elements of InList according to their length. E.g. short lists first, longer lists later, or vice versa.
+
+  Example:
+  ?- lsort([[a,b,c],[d,e],[f,g,h],[d,e],[i,j,k,l],[m,n],[o]],L).
+  L = [[o], [d, e], [d, e], [m, n], [a, b, c], [f, g, h], [i, j, k, l]]
+
+  b) Again, we suppose that a list (InList) contains elements that are lists themselves. But this time the objective is to sort the elements of InList according to their length frequency; i.e. in the default, where sorting is done ascendingly, lists with rare lengths are placed first, others with a more frequent length come later.
+
+  Example:
+  ?- lfsort([[a,b,c],[d,e],[f,g,h],[d,e],[i,j,k,l],[m,n],[o]],L).
+  L = [[i, j, k, l], [o], [a, b, c], [f, g, h], [d, e], [d, e], [m, n]]
+
+  Note that in the above example, the first two lists in the result L have length 4 and 1, both lengths appear just once. The third and forth list have length 3 which appears, there are two list of this length. And finally, the last three lists have length 2. This is the most frequent length.
+  """
+
+  @doc """
+
+  ## Examples
+      iex> Problem28.lsort([['a','b','c'],['d','e'],['f','g','h'],['d','e'],['i','j','k','l'],['m','n'],['o']])
+      [['o'], ['d', 'e'], ['d', 'e'], ['m', 'n'], ['a', 'b', 'c'], ['f', 'g', 'h'], ['i', 'j', 'k', 'l']]
+
+      iex> Problem28.lfsort([['a','b','c'],['d','e'],['f','g','h'],['d','e'],['i','j','k','l'],['m','n'],['o']])
+      [['o'], ['i', 'j', 'k', 'l'], ['a', 'b', 'c'], ['f', 'g', 'h'], ['d', 'e'], ['d', 'e'], ['m', 'n']]
+  """
+
+  def lsort(arr) do
+    arr
+    |> Enum.sort(fn l, r -> Enum.count(l) <= Enum.count(r) end)
+  end
+
+  def lfsort(arr) do
+    arr
+    |> Enum.group_by(fn l -> Enum.count(l) end)
+    |> Enum.map(fn {k, v} -> {Enum.count(v), v} end)
+    |> Enum.sort(fn {c1, l}, {c2, r} -> c1 <= c2 end)
+    |> Enum.flat_map(fn {_, l} -> l end)
   end
 end
