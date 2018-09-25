@@ -91,3 +91,56 @@ defmodule Problem34 do
     |> Enum.count()
   end
 end
+
+defmodule Problem35 do
+  @moduledoc """
+  Construct a flat list containing the prime factors in ascending order.
+  """
+
+  @doc """
+  ## Examples
+
+      iex> Problem35.prime_factors(8)
+      [2,2,2]
+      iex> Problem35.prime_factors(315)
+      [3,3,5,7]
+  """
+
+  def prime_factors(n), do: prime_factors(n, 2, [])
+
+  def prime_factors(n, f, acc) when n < f, do: acc
+
+  def prime_factors(n, f, acc) when rem(n, f) == 0, do: [f | prime_factors(div(n, f), f, acc)]
+
+  def prime_factors(n, f, acc), do: prime_factors(n, f + 1, acc)
+end
+
+defmodule Problem36 do
+  @moduledoc """
+  Construct a list containing the prime factors and their multiplicity.
+
+  """
+
+  @doc """
+  ## Examples
+
+      iex> Problem36.prime_factors(8)
+      [{2,3}]
+      iex> Problem36.prime_factors(315)
+      [{3,2},{5,1},{7,1}]
+  """
+
+  def prime_factors(n),
+    do:
+      prime_factors(n, 2, [])
+      |> Problem10.pack()
+      |> Enum.map(fn [h , s | _] ->
+        {s, h}
+      end)
+
+  def prime_factors(n, f, acc) when n < f, do: acc
+
+  def prime_factors(n, f, acc) when rem(n, f) == 0, do: [f | prime_factors(div(n, f), f, acc)]
+
+  def prime_factors(n, f, acc), do: prime_factors(n, f + 1, acc)
+end
