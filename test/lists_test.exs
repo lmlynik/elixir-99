@@ -1,4 +1,4 @@
-defmodule ProblemTest do
+defmodule ListsProblemsTest do
   use ExUnit.Case
   doctest Problem1
   doctest Problem2
