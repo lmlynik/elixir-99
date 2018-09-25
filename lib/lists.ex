@@ -157,14 +157,19 @@ defmodule Problem6 do
 
   """
   def is_palindrome?(arr) do
-    t = arr
-        |> Enum.count()
-        |> div_2
-        |> Kernel.trunc()
+    t =
+      arr
+      |> Enum.count()
+      |> div_2
+      |> Kernel.trunc()
+
     left = Enum.take(arr, t)
-    right = arr
-            |> Enum.reverse()
-            |> Enum.take(t)
+
+    right =
+      arr
+      |> Enum.reverse()
+      |> Enum.take(t)
+
     left == right
   end
 
@@ -743,8 +748,8 @@ defmodule Problem28 do
   def lfsort(arr) do
     arr
     |> Enum.group_by(fn l -> Enum.count(l) end)
-    |> Enum.map(fn {k, v} -> {Enum.count(v), v} end)
-    |> Enum.sort(fn {c1, l}, {c2, r} -> c1 <= c2 end)
+    |> Enum.map(fn {_, v} -> {Enum.count(v), v} end)
+    |> Enum.sort(fn {c1, _}, {c2, _} -> c1 <= c2 end)
     |> Enum.flat_map(fn {_, l} -> l end)
   end
 end
