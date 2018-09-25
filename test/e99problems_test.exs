@@ -9,4 +9,20 @@ defmodule ProblemTest do
   doctest Problem7
   doctest Problem8
   doctest Problem9
+  doctest Problem10
+  doctest Problem11
+  doctest Problem12
+  doctest Problem13
+  doctest Problem14
+  doctest Problem15
+  doctest Problem16
+  doctest Problem17
+  doctest Problem18
+  doctest Problem19
+  doctest Problem20
+  doctest Problem21
+  doctest Problem22
+  doctest Problem23
+  doctest Problem24
+  doctest Problem25
 end
