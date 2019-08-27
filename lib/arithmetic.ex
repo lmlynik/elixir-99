@@ -17,7 +17,7 @@ defmodule Problem31 do
 
   """
 
-  def is_prime?(i) when is_integer(i) and i < 2, do: false
+  def is_prime?(i) when is_integer(i) and i <= 2, do: false
 
   def is_prime?(i) when is_integer(i) and i > 2, do: is_prime?(2, i)
 
@@ -83,6 +83,9 @@ defmodule Problem34 do
 
       iex> Problem34.totient_phi(10)
       4
+
+      iex> Problem34.totient_phi(27)
+      18
   """
 
   def totient_phi(i) do
@@ -134,7 +137,7 @@ defmodule Problem36 do
     do:
       prime_factors(n, 2, [])
       |> Problem10.pack()
-      |> Enum.map(fn [h , s | _] ->
+      |> Enum.map(fn [h, s | _] ->
         {s, h}
       end)
 
@@ -143,4 +146,86 @@ defmodule Problem36 do
   def prime_factors(n, f, acc) when rem(n, f) == 0, do: [f | prime_factors(div(n, f), f, acc)]
 
   def prime_factors(n, f, acc), do: prime_factors(n, f + 1, acc)
+end
+
+defmodule Problem37 do
+  @moduledoc """
+  See problem P34 for the definition of Euler's totient function. If the list of the prime factors of a number m is known in the form of problem P36 then the function phi(m) can be efficiently calculated as follows: Let [[p1,m1],[p2,m2],[p3,m3],...] be the list of prime factors (and their multiplicities) of a given number m. Then phi(m) can be calculated with the following formula:
+  phi(m) = (p1 - 1) * p1**(m1 - 1) * (p2 - 1) * p2**(m2 - 1) * (p3 - 1) * p3**(m3 - 1) * ...
+
+  Note that a**b stands for the b'th power of a.
+  """
+
+  @doc """
+  ## Examples
+
+      iex> Problem37.totient_phi(10)
+      Problem34.totient_phi(10)
+
+
+      iex> Problem37.totient_phi(27)
+      Problem34.totient_phi(27)
+  """
+
+  def totient_phi(n) do
+    Problem36.prime_factors(n)
+    |> Enum.map(fn {p, m} ->
+      (p - 1) * :math.pow(p, m - 1)
+    end)
+    |> Enum.reduce(1, fn x, acc -> x * acc end)
+    |> round
+  end
+end
+
+defmodule Problem39 do
+  @moduledoc """
+  Given a range of integers by its lower and upper limit, construct a list of all prime numbers in that range.
+  """
+
+  @doc """
+  ## Examples
+
+      iex> Problem39.primes(1, 10)
+      [3,5,7]
+  """
+
+  def primes(from, to) do
+    from..to
+    |> Enum.filter(fn n -> Problem31.is_prime?(n) end)
+  end
+end
+
+defmodule Problem40 do
+  @moduledoc """
+  Goldbach's conjecture says that every positive even number greater than 2 is the sum of two prime numbers.
+  Example: 28 = 5 + 23. It is one of the most famous facts in number theory that has not been proved to be correct in the general case.
+  It has been numerically confirmed up to very large numbers (much larger than we can go with our Prolog system).
+  Write a predicate to find the two prime numbers that sum up to a given even integer.
+
+  """
+
+  @doc """
+  ## Examples
+
+      iex> Problem40.goldbach(28)
+      {5, 23}
+
+      iex> Problem40.goldbach(20)
+      {3, 17}
+  """
+
+  def goldbach(n) do
+
+    prime =
+      n..0
+      |> Enum.find(n, fn n -> Problem31.is_prime?(n) end)
+
+    cover = n - prime
+
+    if Problem31.is_prime?(cover) do
+      {cover, prime}
+    else
+      goldbach(prime - 1)
+    end
+  end
 end

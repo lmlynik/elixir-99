@@ -6,4 +6,7 @@ defmodule ArithmeticProblemsTest do
   doctest Problem34
   doctest Problem35
   doctest Problem36
+  doctest Problem37
+  doctest Problem39
+  doctest Problem40
 end

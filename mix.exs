@@ -5,7 +5,7 @@ defmodule Problem.Mixfile do
     [
       app: :e99problems,
       version: "0.1.0",
-      elixir: ">= 1.6.0-dev",
+      elixir: "~> 1.9",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps()
