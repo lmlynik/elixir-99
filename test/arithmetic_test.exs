@@ -9,4 +9,5 @@ defmodule ArithmeticProblemsTest do
   doctest Problem37
   doctest Problem39
   doctest Problem40
+  doctest Problem41
 end

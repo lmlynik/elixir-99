@@ -17,7 +17,9 @@ defmodule Problem31 do
 
   """
 
-  def is_prime?(i) when is_integer(i) and i <= 2, do: false
+  def is_prime?(i) when is_integer(i) and i in [2, 3, 5, 7], do: true
+
+  def is_prime?(i) when is_integer(i) and i < 2, do: false
 
   def is_prime?(i) when is_integer(i) and i > 2, do: is_prime?(2, i)
 
@@ -186,7 +188,7 @@ defmodule Problem39 do
   ## Examples
 
       iex> Problem39.primes(1, 10)
-      [3,5,7]
+      [2,3,5,7]
   """
 
   def primes(from, to) do
@@ -206,26 +208,75 @@ defmodule Problem40 do
 
   @doc """
   ## Examples
+      iex> Problem40.goldbach(3)
+      {:error, "not even"}
+
+      iex> Problem40.goldbach(10)
+      {:ok, {3, 7}}
 
       iex> Problem40.goldbach(28)
-      {5, 23}
+      {:ok, {5, 23}}
 
       iex> Problem40.goldbach(20)
-      {3, 17}
+      {:ok, {3, 17}}
+
+      iex> Problem40.goldbach(1856)
+      {:ok, {67, 1789}}
+
+      iex> Problem40.goldbach(1001)
+      {:error, "not even"}
   """
 
-  def goldbach(n) do
+  def goldbach(n) when rem(n, 2) != 0, do: {:error, "not even"}
 
-    prime =
-      n..0
-      |> Enum.find(n, fn n -> Problem31.is_prime?(n) end)
+  def goldbach(n), do: goldbach(1, n - 1, n)
 
-    cover = n - prime
+  defp goldbach(c, p, n) when c > 0 and p > 0 and p + c == n do
+    case {Problem31.is_prime?(p), Problem31.is_prime?(c)} do
+      {true, true} ->
+        {:ok, {c, p}}
 
-    if Problem31.is_prime?(cover) do
-      {cover, prime}
-    else
-      goldbach(prime - 1)
+      _ ->
+        goldbach(c + 1, p - 1, n)
     end
   end
 end
+
+defmodule Problem41 do
+  @moduledoc """
+  Given a range of integers by its lower and upper limit, print a list of all even numbers and their Goldbach composition.
+  Example:
+  ?- goldbach_list(9,20).
+  10 = 3 + 7
+  12 = 5 + 7
+  14 = 3 + 11
+  16 = 3 + 13
+  18 = 5 + 13
+  20 = 3 + 17
+
+  In most cases, if an even number is written as the sum of two prime numbers, one of them is very small. Very rarely, the primes are both bigger than say 50. Try to find out how many such cases there are in the range 2..3000.
+
+  Example (for a print limit of 50):
+  ?- goldbach_list(1,2000,50).
+  992 = 73 + 919
+  1382 = 61 + 1321
+  1856 = 67 + 1789
+  1928 = 61 + 1867
+
+  """
+
+  @doc """
+  ## Examples
+      iex> Problem41.goldbach_in_range(9, 20)
+      [{10, 3, 7},{12, 5, 7}, {14, 3, 11}, {16, 3, 13}, {18, 5, 13}, {20, 3, 17}]
+  """
+
+  def goldbach_in_range(from, to) do
+    from..to
+    |> Enum.map(fn n -> {n, Problem40.goldbach(n)} end)
+    |> Enum.filter(&match?({_, {:ok, _}}, &1))
+    |> Enum.map(fn {n, {_, {p, c}}} -> {n, p, c} end)
+  end
+end
+
+mox

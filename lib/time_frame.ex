@@ -2,7 +2,7 @@ defmodule TimeFrame do
   @moduledoc """
   https://medium.com/elixirlabs/implement-a-basic-block-yield-with-elixir-d00f313831f7
   """
-  defmacro execute(name, units \\ :micro_seconds, do: yield) do
+  defmacro execute(name, units \\ :microsecond, do: yield) do
     quote do
       start = System.monotonic_time(unquote(units))
       result = unquote(yield)

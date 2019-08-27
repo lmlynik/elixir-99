@@ -3,7 +3,7 @@ defmodule Problem38Test do
 
   require TimeFrame
 
-  test "module exists" do
+  test "execute time tests" do
     TimeFrame.execute "p34" do
       Problem34.totient_phi(10090)
     end
