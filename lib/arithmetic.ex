@@ -278,5 +278,3 @@ defmodule Problem41 do
     |> Enum.map(fn {n, {_, {p, c}}} -> {n, p, c} end)
   end
 end
-
-mox
