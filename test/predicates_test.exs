@@ -13,8 +13,9 @@ defmodule PredicatesTest do
 
   test "eval simple" do
     assert eval(and_(true, false)) == false
-    assert eval(and_(true, true)) == true
-    assert eval(and_(false, true)) == false
+    assert eval(nand_(true, true)) == false
+    assert eval(xor_(false, true)) == false
+    assert eval(not_(true)) == false
   end
 
   test "structure" do
@@ -24,5 +25,9 @@ defmodule PredicatesTest do
 
   test "eval complex" do
     assert eval(or_(false, or_(true, false))) == true
+  end
+
+  test "eval values" do
+    assert eval_values(or_(:a, or_(:b, :a)), %{a: false, b: true}) == true
   end
 end

@@ -5,7 +5,6 @@ defmodule Problem1 do
 
   @doc """
 
-
   ## Examples
 
       iex> Problem1.last([1,2,3,4])
@@ -269,7 +268,7 @@ end
 
 defmodule Problem10 do
   @moduledoc """
-  Use the result of problem P09 to implement the so-called run-length encoding data compression method. 
+  Use the result of problem P09 to implement the so-called run-length encoding data compression method.
   Consecutive duplicates of elements are encoded as terms [N,E] where N is the number of duplicates of the element E.
   """
 
@@ -298,7 +297,7 @@ end
 
 defmodule Problem11 do
   @moduledoc """
-  Modify the result of problem P10 in such a way that if an element has no duplicates it is simply copied into the result list. 
+  Modify the result of problem P10 in such a way that if an element has no duplicates it is simply copied into the result list.
   Only elements with duplicates are transferred as [N,E] terms.
   """
 
@@ -360,7 +359,7 @@ end
 
 defmodule Problem13 do
   @moduledoc """
-  Implement the so-called run-length encoding data compression method directly. 
+  Implement the so-called run-length encoding data compression method directly.
   I.e. don't explicitly create the sublists containing the duplicates, as in problem P09, but only count them. As in problem P11,
   simplify the result list by replacing the singleton terms [1,X] by X.
   """
@@ -415,7 +414,7 @@ defmodule Problem14 do
 
       iex> Problem14.dupli(['a','b','c','c','d'])
       ['a','a','b','b','c','c','c','c','d','d']
-      
+
       iex> Problem14.dupli([1,2,3,3,4,4,4])
       [1,1,2,2,3,3,3,3,4,4,4,4,4,4]
 
@@ -440,7 +439,7 @@ defmodule Problem15 do
 
       iex> Problem15.dupli(['a','b','c','c','d'],2)
       ['a','a','b','b','c','c','c','c','d','d']
-      
+
       iex> Problem15.dupli([1,2,3,3,4,4,4],3)
       [1,1,1,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4]
 
@@ -472,7 +471,7 @@ defmodule Problem16 do
 
       iex> Problem16.drop(['a','b','c','c','d'],2)
       ['a','c','d']
-      
+
       iex> Problem16.drop([1,2,3,3,4,4,4],3)
       [1,2,3,4,4]
 
@@ -513,7 +512,7 @@ defmodule Problem17 do
 
       iex> Problem17.split(['a','b','c','c','d'],2)
       [['a', 'b'], ['c', 'c', 'd']]
-      
+
       iex> Problem17.split([1,2,3,3,4,4,4],3)
       [[1,2,3],[3,4,4,4]]
 
@@ -534,7 +533,7 @@ end
 
 defmodule Problem18 do
   @moduledoc """
-  Given two indices, I and K, the slice is the list containing the elements between the I'th and K'th element of the original list (both limits included). 
+  Given two indices, I and K, the slice is the list containing the elements between the I'th and K'th element of the original list (both limits included).
   Start counting the elements with 1.
   """
 
@@ -565,7 +564,7 @@ defmodule Problem19 do
 
       iex> Problem19.rotate(['a','b','c','d','e','f','g','h','i','k'],3)
       ['d','e','f','g','h','i','k','a','b','c']
-      
+
       iex> Problem19.rotate(['a','b','c','d','e','f','g','h','i','k'],-3)
       ['h','i','k','a','b','c','d','e','f','g']
 
@@ -599,7 +598,7 @@ defmodule Problem20 do
 
       iex> Problem20.remove_at(['a','b','c','d'],2)
       ['a', 'b', 'd']
-      
+
   """
 
   def remove_at(arr, at) do
