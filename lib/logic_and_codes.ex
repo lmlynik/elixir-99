@@ -263,20 +263,25 @@ defmodule Problem50 do
   ## Examples
 
       iex> Problem50.huffman([{"a", 45}, {"b", 13}, {"c", 12}, {"d", 16}, {"e", 9}, {"f", 5}])
-      [{"a",0}, {"b",101}, {"c",100}, {"d",111}, {"e",1101}, {"f",1100}]
+      [{"a","0"}, {"b","101"}, {"c","100"}, {"d","111"}, {"e","1101"}, {"f","1100"}]
   """
 
-  defmodule HuffmanNode do
+  defmodule Node do
     defstruct [:freq, :left, :right]
   end
 
+  defmodule Leaf do
+    defstruct [:freq, :char]
+  end
 
   def huffman([]), do: []
 
   def huffman(ls) when is_list(ls) do
     tree =
       ls
-      |> Enum.reduce(PairingHeap.new(), fn {l, f}, acc -> PairingHeap.put(acc, f, l) end)
+      |> Enum.reduce(PairingHeap.new(), fn {l, f}, acc ->
+        PairingHeap.put(acc, f, %Leaf{freq: f, char: l})
+      end)
       |> huffmanTree()
 
     ls
@@ -287,33 +292,48 @@ defmodule Problem50 do
   defp huffmanTree(queue) do
     {pop1, xs} = PairingHeap.pop(queue)
     {pop2, xs2} = PairingHeap.pop(xs)
-    {f1, _} = pop1
-    {f2, _} = pop2
+    {_, n1} = pop1
+    {_, n2} = pop2
 
-    case {f1, f2} do
-      {_, nil} ->
-        %HuffmanNode{freq: f1, left: pop1, right: nil}
+    huffmanTree(n1, n2, xs2)
+  end
 
-      {f1, f2} ->
-        nf = f1 + f2
+  defp huffmanTree(r, nil, _), do: r
 
-        xs2
-        |> PairingHeap.put(nf, %HuffmanNode{freq: nf, left: pop1, right: n2})
-        |> huffmanTree()
+  defp huffmanTree(n1, n2, xs) do
+    nf = n1.freq + n2.freq
+
+    xs
+    |> PairingHeap.put(nf, %Node{freq: nf, left: n1, right: n2})
+    |> huffmanTree()
+  end
+
+  defp lookup(%Node{left: leaf = %Leaf{}, right: node = %Node{}}, l, acc) do
+    case leaf.char do
+      ^l -> "#{acc}0"
+      _ -> lookup(node, l, "#{acc}1")
     end
   end
 
-  defp lookup(r, l, acc) do
-    # "#{acc}0"
-    r
+  defp lookup(%Node{left: node = %Node{}, right: leaf = %Leaf{}}, l, acc) do
+    case leaf.char do
+      ^l -> "#{acc}1"
+      _ -> lookup(node, l, "#{acc}0")
+    end
   end
 
+  defp lookup(%Node{left: node1 = %Node{}, right: node2 = %Node{}}, l, acc) do
+    case {lookup(node1, l, "#{acc}0"), lookup(node2, l, "#{acc}1")} do
+      {nil, r} -> r
+      {r, nil} -> r
+    end
+  end
 
-
-  # defp lookup([_, {_, tail} | _], l, acc) do
-  #   IO.inspect(Kernel.binding())
-  #   lookup(tail, l, "#{acc}1")
-  # end
-
-  # defp lookup(_, _, acc), do: acc
+  defp lookup(%Node{left: leaf1 = %Leaf{}, right: leaf2 = %Leaf{}}, l, acc) do
+    case {leaf1, leaf2} do
+      {%Leaf{char: ^l}, _} -> "#{acc}0"
+      {_, %Leaf{char: ^l}} -> "#{acc}1"
+      _ -> nil
+    end
+  end
 end
